@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClick(view: View) {
-        rhythmView.setPerHeight(0.9f)
+        waveLineView.startLoaddingAnim()
     }
 
     fun onClick2(view: View) {

@@ -5,6 +5,8 @@
         <attr name="wlvThickLineWidth" format="dimension" />
         //细线宽度
         <attr name="wlvFineLineWidth" format="dimension" />
+        <!-- 加载时候的宽度-->
+        <attr name="wlvLoaddWidth" format="dimension" />
         //控制向右偏移速度，越小偏移速度越快 250
         <attr name="wlvMoveSpeed" format="float" />
         //采样点的数量，越高越精细，但是高于一定限度肉眼很难分辨，越高绘制效率越低 64

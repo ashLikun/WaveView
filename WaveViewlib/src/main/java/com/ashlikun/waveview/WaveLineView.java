@@ -47,8 +47,12 @@ public class WaveLineView extends View {
     private int sensibility;
     //粗线宽度
     private int thickLineWidth;
+    //加载的时候宽度
+    private int loaddWidth;
     //细线宽度
     private int fineLineWidth;
+    //是否显示loadding样式
+    private boolean isLoadding = false;
     //颜色合集
     private int[] colors = new int[]{
             Color.parseColor("#33F60C0C"),//红
@@ -89,7 +93,7 @@ public class WaveLineView extends View {
     private float prepareAlpha = 0f;
     //是否开启准备动画
     private boolean isOpenPrepareAnim = false;
-    long startAt = 0;
+    private long startAt = 0;
     private boolean animIsStart = false;
 
     public WaveLineView(Context context) {
@@ -110,6 +114,7 @@ public class WaveLineView extends View {
         samplingSize = t.getInt(R.styleable.WaveLineView_wlvSamplingSize, DEFAULT_SAMPLING_SIZE);
         thickLineWidth = (int) t.getDimension(R.styleable.WaveLineView_wlvThickLineWidth, 6);
         fineLineWidth = (int) t.getDimension(R.styleable.WaveLineView_wlvFineLineWidth, 2);
+        loaddWidth = (int) t.getDimension(R.styleable.WaveLineView_wlvFineLineWidth, 0);
         offsetSpeed = t.getFloat(R.styleable.WaveLineView_wlvMoveSpeed, DEFAULT_OFFSET_SPEED);
         sensibility = t.getInt(R.styleable.WaveLineView_wlvSensibility, DEFAULT_SENSIBILITY);
         t.recycle();
@@ -149,7 +154,6 @@ public class WaveLineView extends View {
         return false;
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -158,8 +162,14 @@ public class WaveLineView extends View {
         }
         float offset = (System.currentTimeMillis() - startAt) / offsetSpeed;
 
+
         if (isParametersNull()) {
             initDraw(canvas);
+        }
+
+        if (isLoadding) {
+            drawLoadding(canvas, offset);
+            return;
         }
 
         if (lineAnim(canvas)) {
@@ -202,6 +212,36 @@ public class WaveLineView extends View {
                 canvas.drawPath(paths.get(n), paint);
             }
         }
+        if (animIsStart) {
+            invalidate();
+        }
+    }
+
+    /**
+     * 绘制加载动画
+     */
+    private void drawLoadding(Canvas canvas, float offset) {
+        if (loaddWidth <= 0) {
+            loaddWidth = getWidth() / 4;
+        }
+        resetPaths();
+        paint.setStrokeWidth(thickLineWidth);
+        paint.setAlpha((int) (255 * alphaInAnim()));
+        Path path = paths.get(0);
+        int offsetInt = (int) (offset * 600);
+        int contentWidth = getWidth() - loaddWidth;
+        int x;
+        if ((offsetInt / contentWidth) % 2 == 0) {
+            //正向
+            x = (int) (offsetInt % contentWidth);
+        } else {
+            //反向
+            x = contentWidth - (int) (offsetInt % contentWidth);
+        }
+        int y = (getHeight() - thickLineWidth) / 2;
+        path.moveTo(x, y);
+        path.lineTo(x + loaddWidth, y);
+        canvas.drawPath(path, paint);
         if (animIsStart) {
             invalidate();
         }
@@ -314,11 +354,22 @@ public class WaveLineView extends View {
     public void startAnim() {
         initParameters();
         animIsStart = true;
+        isLoadding = false;
+        startAt = System.currentTimeMillis();
+        invalidate();
+    }
+
+    public void startLoaddingAnim() {
+        initParameters();
+        animIsStart = true;
+        isLoadding = true;
+        startAt = System.currentTimeMillis();
         invalidate();
     }
 
     public void stopAnim() {
         animIsStart = false;
+        isLoadding = false;
     }
 
 
