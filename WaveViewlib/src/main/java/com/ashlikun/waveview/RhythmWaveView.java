@@ -39,6 +39,13 @@ public class RhythmWaveView extends View {
     private ValueAnimator mAnimator;
     private int mHeight;
     private int mWidth;
+    //#1500b6   #2987ff   #6cfdc9  #09db8f
+    private int[] colors = new int[]{
+            Color.parseColor("#1500b6"),//红
+            Color.parseColor("#2987ff"),//橙
+            Color.parseColor("#6cfdc9"),//黄
+            Color.parseColor("#09db8f")//绿
+    };
 
     public RhythmWaveView(Context context) {
         this(context, null);
@@ -97,28 +104,24 @@ public class RhythmWaveView extends View {
 
 
     private void handleColor() {
-        int[] colors = new int[]{
-                Color.parseColor("#33F60C0C"),//红
-                Color.parseColor("#F3B913"),//橙
-                Color.parseColor("#E7F716"),//黄
-                Color.parseColor("#3DF30B"),//绿
-                Color.parseColor("#0DF6EF"),//青
-                Color.parseColor("#0829FB"),//蓝
-                Color.parseColor("#33B709F4"),//紫
-        };
 
-        float[] pos = new float[]{
-                1.f / 10, 2.f / 7, 3.f / 7, 4.f / 7, 5.f / 7, 9.f / 10, 1
-        };
 
         mPaint.setShader(
                 new LinearGradient(
                         (int) min, 0, (int) max, 0,
-                        colors, pos,
+                        colors, getLinearGradientPos(),
                         Shader.TileMode.CLAMP
                 ));
     }
 
+    public float[] getLinearGradientPos() {
+        int size = colors.length;
+        float[] pos = new float[size];
+        for (int i = 0; i < size; i++) {
+            pos[i] = (i + 1f) / size;
+        }
+        return pos;
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -170,4 +173,11 @@ public class RhythmWaveView extends View {
                 TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
+    public int[] getColors() {
+        return colors;
+    }
+
+    public void setColors(int[] colors) {
+        this.colors = colors;
+    }
 }

@@ -53,15 +53,12 @@ public class WaveLineView extends View {
     private int fineLineWidth;
     //是否显示loadding样式
     private boolean isLoadding = false;
-    //颜色合集
+    //颜色合集#5300b6   #2987ff   #00fffe   #04e3bd
     private int[] colors = new int[]{
-            Color.parseColor("#33F60C0C"),//红
-            Color.parseColor("#F3B913"),//橙
-            Color.parseColor("#E7F716"),//黄
-            Color.parseColor("#3DF30B"),//绿
-            Color.parseColor("#0DF6EF"),//青
-            Color.parseColor("#0829FB"),//蓝
-            Color.parseColor("#33B709F4"),//紫
+            Color.parseColor("#1500b6"),//红
+            Color.parseColor("#2987ff"),//橙
+            Color.parseColor("#6cfdc9"),//黄
+            Color.parseColor("#09db8f")//绿
     };
     private final Paint paint = new Paint();
 
