@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="WaveLineView">
+        //粗线宽度
+        <attr name="wlvThickLineWidth" format="dimension" />
+        //细线宽度
+        <attr name="wlvFineLineWidth" format="dimension" />
+        //控制向右偏移速度，越小偏移速度越快 250
+        <attr name="wlvMoveSpeed" format="float" />
+        //采样点的数量，越高越精细，但是高于一定限度肉眼很难分辨，越高绘制效率越低 64
+        <attr name="wlvSamplingSize" format="integer" />
+        //灵敏度，越大越灵敏[1,10]
+        <attr name="wlvSensibility" format="integer" />
+    </declare-styleable>
+</resources>
